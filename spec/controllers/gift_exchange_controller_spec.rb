@@ -35,12 +35,26 @@ describe Challenge::GiftExchangeController do
         expect(response).to render_template("new")
       end
     end
+
+    context "when freeform_num_required is zero (fails to save)" do
+      it "renders the new template" do
+        post :create, params: { collection_id: @collection.name, gift_exchange: { requests_num_required: 0 } }
+        expect(response).to render_template("new")
+      end
+    end
   end
 
   describe "update" do
     context "when freeform_num_required is negative (fails to save)" do
       it "renders the edit template" do
         post :update, params: { collection_id: @collection.name, gift_exchange: { requests_num_required: -1 } }
+        expect(response).to render_template("edit")
+      end
+    end
+
+    context "when freeform_num_required is zero (fails to save)" do
+      it "renders the edit template" do
+        post :update, params: { collection_id: @collection.name, gift_exchange: { requests_num_required: 0 } }
         expect(response).to render_template("edit")
       end
     end
